@@ -41,6 +41,57 @@ const QUESTIONS = [
   { id:38, type:"match", topic:"메모리", question:"각 설명에 맞는 메모리 종류를 연결하시오.", pairs:[{left:"한 번 기록 후 반영구 보존, 삭제/수정 불가",right:"ROM"},{left:"임의 접근, 읽기/쓰기 가능한 주기억장치",right:"RAM"},{left:"전력소모 적음, 고속 프로그래밍, 대용량 저장",right:"FLASH"},{left:"화상 정보 저장 전용 메모리",right:"VRAM"}], hint:"ROM=읽기전용, RAM=주기억, FLASH=저장장치, VRAM=그래픽" },
   { id:39, type:"match", topic:"리눅스 시스템", question:"각 설명에 맞는 리눅스 시스템 구성 요소를 연결하시오.", pairs:[{left:"GNU하에 개발된 리눅스 부트로더",right:"GRUB"},{left:"커널 부팅 후 실행되는 첫 번째 프로세스",right:"init"},{left:"부팅 시 자동 마운트 설정 파일",right:"/etc/fstab"}], hint:"GRUB=부트로더, init=PID1, fstab=마운트설정" },
   { id:40, type:"match", topic:"사설 IP", question:"각 사설 IP 클래스와 범위를 올바르게 연결하시오.", pairs:[{left:"사설 A클래스",right:"10.0.0.0 ~ 10.255.255.255"},{left:"사설 B클래스",right:"172.16.0.0 ~ 172.31.255.255"},{left:"사설 C클래스",right:"192.168.0.0 ~ 192.168.255.255"}], hint:"A=10, B=172.16~31, C=192.168" },
+
+  // ── 추가 문제 ────────────────────────────────────────────────────
+  // 네트워크 ID 계산
+  { id:41, type:"short", topic:"서브넷 계산", question:"호스트 IP: 192.168.1.10 / 서브넷 마스크: 255.255.255.240\n→ 네트워크 ID를 구하시오.", answer:["192.168.1.0"], hint:"240=11110000, 10 AND 240 = 0 → 마지막 옥텟 0" },
+  { id:42, type:"short", topic:"서브넷 계산", question:"호스트 IP: 192.168.100.150 / 서브넷 마스크: /25\n→ 네트워크 ID를 구하시오.", answer:["192.168.100.128"], hint:"/25=255.255.255.128, 블록128 기준: 128~255구간 → 네트워크ID 128" },
+  { id:43, type:"short", topic:"서브넷 계산", question:"호스트 IP: 172.50.48.6 / 서브넷 마스크: 255.255.224.0\n→ 네트워크 ID를 구하시오.", answer:["172.50.32.0"], hint:"224=11100000, 48 AND 224 = 32 → 172.50.32.0" },
+  { id:44, type:"short", topic:"서브넷 계산", question:"호스트 IP: 172.168.200.100 / 서브넷 마스크: /18\n→ 네트워크 ID를 구하시오.", answer:["172.168.192.0"], hint:"/18=255.255.192.0, 200 AND 192 = 192 → 172.168.192.0" },
+  { id:45, type:"short", topic:"서브넷 계산", question:"192.xxx.xx.xxx/26 의 서브네트워크 수는 몇 개인가?", answer:["4","4개"], hint:"/26 = C클래스 기본 /24에서 2비트 추가 → 2²=4개" },
+  { id:46, type:"short", topic:"서브넷 계산", question:"192.168.10.0/27 네트워크에서 사용 가능한 유효 호스트 수는?", answer:["30","30개"], hint:"2^5=32개 - 네트워크/브로드캐스트 2개 = 30개" },
+
+  // chmod
+  { id:47, type:"short", topic:"리눅스", question:"파일 ICQA에 소유자=모든 권한, 그룹/기타=읽기+실행 권한을 설정하는 명령어는?", answer:["chmod 755 ICQA"], hint:"모든권한=7(rwx), 읽기+실행=5(r-x) → 755" },
+
+  // 사설 IP 객관식
+  { id:48, type:"multi", topic:"사설 IP", question:"다음 중 사설 C클래스 주소를 모두 고르시오.", options:["192.168.100.1","10.172.192.24","172.18.244.100","224.45.67.129","192.168.13.87"], answer:[0,4], hint:"사설 C = 192.168.0.0 ~ 192.168.255.255" },
+  { id:49, type:"multi", topic:"사설 IP", question:"다음 중 사설 B클래스 주소를 모두 고르시오.", options:["192.168.100.0","224.24.194.18","10.14.36.100","172.30.200.36","172.16.0.1"], answer:[3,4], hint:"사설 B = 172.16.0.0 ~ 172.31.255.255" },
+  { id:50, type:"multi", topic:"사설 IP", question:"다음 중 사설 A클래스 주소를 모두 고르시오.", options:["192.100.2.134","10.172.192.24","172.18.244.100","224.45.67.129","10.0.0.1"], answer:[1,4], hint:"사설 A = 10.0.0.0 ~ 10.255.255.255" },
+
+  // ICMP 객관식
+  { id:51, type:"multi", topic:"ICMP", question:"ICMP Type 3번 메시지는 무엇인가?", options:["Redirect","Destination Unreachable","Echo Request","Time Exceeded","Source Quench"], answer:[1], hint:"Type 3 = Destination Unreachable (목적지 도달 불가)" },
+
+  // OSI 계층
+  { id:52, type:"short", topic:"네트워크", question:"OSI 7계층 중 물리적 매체를 통해 비트 스트림을 전송하는 최하위 계층은?", answer:["물리 계층","물리계층","Physical Layer","Physical"], hint:"1계층, 허브·리피터 동작" },
+  { id:53, type:"short", topic:"네트워크", question:"OSI 7계층 중 MAC 주소를 사용하여 노드 간 프레임 전송·오류 제어를 담당하는 계층은?", answer:["데이터링크 계층","데이터 링크 계층","Data Link Layer","Data Link"], hint:"2계층, 스위치·브리지 동작" },
+  { id:54, type:"short", topic:"네트워크", question:"OSI 7계층 중 IP 주소로 패킷을 라우팅하고 최적 경로를 결정하는 계층은?", answer:["네트워크 계층","네트워크계층","Network Layer","Network"], hint:"3계층, 라우터 동작, IP/ICMP/ARP" },
+
+  // ping
+  { id:55, type:"short", topic:"리눅스", question:"ICMP Echo Request를 보내 대상 호스트의 응답 여부와 지연시간을 확인하는 명령어는?", answer:["ping"], hint:"네트워크 진단 기본 도구" },
+
+  // init 런레벨
+  { id:56, type:"short", topic:"리눅스", question:"리눅스에서 시스템을 재시작하는 init 옵션 번호는?", answer:["6"], hint:"init 0=종료, init 6=재시작" },
+
+  // OSI 매칭
+  { id:57, type:"match", topic:"네트워크", question:"OSI 계층과 주요 기능을 올바르게 연결하시오.", pairs:[{left:"1계층 (물리)",right:"비트 전송, 허브·리피터"},{left:"2계층 (데이터링크)",right:"MAC 주소, 프레임, 스위치"},{left:"3계층 (네트워크)",right:"IP 주소, 라우팅, 패킷"},{left:"6계층 (표현)",right:"암호화·복호화·압축·코드변환"}], hint:"물리=비트, 데이터링크=프레임, 네트워크=패킷, 표현=암호화" },
+
+  // ── 기출 추가 ────────────────────────────────────────────────────
+  { id:58, type:"short", topic:"서브넷 계산", question:"호스트 IP: 170.10.50.2 / 서브넷 마스크: 255.255.224.0\n→ 네트워크 ID를 구하시오.", answer:["170.10.32.0"], hint:"블록32 기준: 32~63구간 → 170.10.32.0" },
+  { id:59, type:"short", topic:"서브넷 계산", question:"호스트 IP: 172.168.102.5 / 서브넷 마스크: 255.255.224.0\n→ 네트워크 ID를 구하시오.", answer:["172.168.96.0"], hint:"블록32 기준: 96~127구간 → 172.168.96.0" },
+  { id:60, type:"short", topic:"리눅스", question:"목적지 서버까지의 네트워크 경로를 추적하는 윈도우 명령어는? (ICMP 기반)", answer:["tracert"], hint:"리눅스=traceroute(UDP), 윈도우=tracert(ICMP)" },
+  { id:61, type:"short", topic:"네트워크", question:"IP 주소를 물리적 네트워크 주소(MAC 주소)로 변환하기 위해 사용되는 프로토콜은?", answer:["ARP"], hint:"Address Resolution Protocol" },
+  { id:62, type:"short", topic:"네트워크", question:"2개 이상의 다른 통신망을 상호 접속하여 정보를 주고받을 수 있게 하는 장치는?", answer:["게이트웨이","Gateway"], hint:"서로 다른 프로토콜 네트워크 간 연결" },
+  { id:63, type:"short", topic:"네트워크", question:"스위치의 특정 포트에서 보이는 모든 패킷을 다른 모니터링 포트로 복제하는 데 사용되는 것은?", answer:["포트 미러링","Port Mirroring"], hint:"네트워크 모니터링/분석 목적" },
+  { id:64, type:"short", topic:"보안", question:"탐지뿐만 아니라 탐지된 공격에 대한 차단까지 자동으로 수행하는 보안 시스템은?", answer:["IPS"], hint:"Intrusion Prevention System, IDS=탐지만, IPS=탐지+차단" },
+  { id:65, type:"short", topic:"보안", question:"비정상적인 트래픽을 탐지하지만 차단은 하지 않고 알림만 제공하는 보안 시스템은?", answer:["IDS"], hint:"Intrusion Detection System" },
+  { id:66, type:"short", topic:"보안", question:"이미 발견된 공격 패턴을 미리 입력해두고 해당 패턴을 탐지하는 IDS 기법은?", answer:["오용탐지기법","오용 탐지 기법"], hint:"패턴 매칭 방식, 새로운 공격 탐지 불가" },
+  { id:67, type:"short", topic:"보안", question:"임의로 구성된 웹사이트에서 눈속임을 통해 이용자의 정보를 빼가는 해킹 수법은?", answer:["스푸핑","Spoofing"], hint:"신분 위장 공격" },
+  { id:68, type:"short", topic:"네트워크", question:"매니지먼트와 에이전트 사이에 관리 정보를 주고받기 위한 프로토콜이며 정보교환 단위는 메시지인 프로토콜은?", answer:["SNMP"], hint:"Simple Network Management Protocol" },
+  { id:69, type:"short", topic:"서브넷 계산", question:"IP 클래스 중 첫 번째 비트가 항상 0이고 할당 가능한 호스트 수가 2²⁴개인 클래스는?", answer:["A","A클래스","A class","A 클래스"], hint:"0.0.0.0~127.255.255.255" },
+  { id:70, type:"short", topic:"네트워크", question:"데이터링크 계층에서 두 세그먼트 사이의 패킷 전송을 담당하는 장치는?", answer:["브리지","Bridge"], hint:"스위치와 비슷하지만 더 단순한 장치" },
+  { id:71, type:"match", topic:"네트워크", question:"OSI 계층별 네트워크 장치를 올바르게 연결하시오.", pairs:[{left:"물리 계층 (1계층)",right:"허브, 리피터"},{left:"데이터링크 계층 (2계층)",right:"스위치, 브리지"},{left:"네트워크 계층 (3계층)",right:"라우터"},{left:"응용~세션 계층",right:"게이트웨이"}], hint:"물리=허브, 데이터링크=스위치, 네트워크=라우터" },
+  { id:72, type:"match", topic:"IPv6", question:"IPv4와 IPv6의 특징을 올바르게 연결하시오.", pairs:[{left:"32비트, 10진수, 점(.) 구분",right:"IPv4"},{left:"128비트, 16진수, 콜론(:) 구분",right:"IPv6"},{left:"브로드캐스트 지원",right:"IPv4"},{left:"애니캐스트 지원",right:"IPv6"}], hint:"IPv4=32비트/10진수/브로드캐스트, IPv6=128비트/16진수/애니캐스트" },
 ];
 
 const TC_MAP = {
@@ -59,6 +110,7 @@ const TC_MAP = {
   "메모리":{bg:"#e0f7fa",border:"#00838f",text:"#00363a"},
   "사설 IP":{bg:"#e9f7ef",border:"#3aab6b",text:"#1a6b3e"},
   "네트워크 서비스":{bg:"#e9f7ef",border:"#3aab6b",text:"#1a6b3e"},
+  "서브넷 계산":{bg:"#fff3e0",border:"#ef6c00",text:"#7a3500"},
 };
 const TC = t => TC_MAP[t]||{bg:"#f5f5f5",border:"#999",text:"#333"};
 const TYPE_LABEL={short:"단답형",multi:"다중선택",match:"연결하기"};
@@ -403,12 +455,15 @@ export default function App(){
   const[results,setResults]=useState({});
   const[idx,setIdx]=useState(0);
   const[mode,setMode]=useState("study");
+  const[shuffled,setShuffled]=useState(false);
+  const[questionOrder,setQuestionOrder]=useState(null);
   const topRef=useRef(null);
 
-  const filtered=QUESTIONS.filter(q=>
+  const base=QUESTIONS.filter(q=>
     (topicF==="전체"||q.topic===topicF)&&
     (typeF==="전체"||q.type===typeF)
   );
+  const filtered = questionOrder ? questionOrder.filter(q=>base.includes(q)) : base;
   const total=filtered.length;
   const correct=Object.values(results).filter(Boolean).length;
   const q=filtered[idx];
@@ -421,7 +476,19 @@ export default function App(){
   const handleResult=(id,ok)=>setResults(r=>({...r,[id]:ok}));
   const changeFilter=(type,val)=>{
     if(type==="topic")setTopicF(val);else setTypeF(val);
-    setIdx(0);setResults({});
+    setIdx(0);setResults({});setQuestionOrder(null);setShuffled(false);
+  };
+  const toggleShuffle=()=>{
+    const base=QUESTIONS.filter(q=>
+      (topicF==="전체"||q.topic===topicF)&&
+      (typeF==="전체"||q.type===typeF)
+    );
+    if(shuffled){
+      setQuestionOrder(null);setShuffled(false);
+    }else{
+      setQuestionOrder([...base].sort(()=>Math.random()-.5));setShuffled(true);
+    }
+    setIdx(0);setResults({});scrollTop();
   };
 
   if(mode==="result"){
@@ -441,8 +508,17 @@ export default function App(){
       <div ref={topRef} style={{background:"#fff",borderBottom:"1px solid #f0f0f0",
         padding:"12px 16px 10px",position:"sticky",top:0,zIndex:10}}>
         <div style={{maxWidth:520,margin:"0 auto"}}>
-          <div style={{fontWeight:800,fontSize:16,color:"#1a1a1a",letterSpacing:-0.3}}>
-            📡 네트워크관리사 2급 실기
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <div style={{fontWeight:800,fontSize:16,color:"#1a1a1a",letterSpacing:-0.3}}>
+              📡 네트워크관리사 2급 실기
+            </div>
+            <button onClick={toggleShuffle} style={{
+              padding:"6px 12px",borderRadius:20,fontSize:12,fontWeight:700,
+              border:`2px solid ${shuffled?"#ef6c00":"#e0e0e0"}`,
+              background:shuffled?"#fff3e0":"#fff",
+              color:shuffled?"#ef6c00":"#999",
+              cursor:"pointer",WebkitTapHighlightColor:"transparent",minHeight:32,
+            }}>{shuffled?"🔀 섞기 ON":"🔀 섞기"}</button>
           </div>
           {/* 유형 필터 */}
           <div style={{display:"flex",gap:6,marginTop:9,flexWrap:"wrap",paddingBottom:2}}>
