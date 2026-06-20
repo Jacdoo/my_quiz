@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const QUESTIONS = [
   { id:1, type:"short", topic:"라우팅", question:"Distance Vector 방식, 최대 홉 15개, 업데이트 주기 30초인 라우팅 프로토콜은?", answer:["RIP"], hint:"홉 수 기준 라우팅, 업데이트 30초" },
@@ -142,6 +142,16 @@ function ShortQ({q,onResult}){
   const[done,setDone]=useState(false);
   const[ok,setOk]=useState(false);
   const[hint,setHint]=useState(false);
+  const inputRef=useRef(null);
+
+  useEffect(()=>{
+    // 모바일(터치 기기)에서는 자동 포커스 시 키보드가 강제로 떠서 불편하므로 PC에서만 적용
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    if(!isTouchDevice){
+      inputRef.current?.focus();
+    }
+  },[]);
+
   const check=()=>{
     if(!val.trim()||done)return;
     const correct=q.answer.some(a=>a.toLowerCase()===val.trim().toLowerCase());
@@ -150,12 +160,14 @@ function ShortQ({q,onResult}){
   return(
     <div>
       <input
+        ref={inputRef}
         type="text" value={val}
         onChange={e=>setVal(e.target.value)}
         onKeyDown={e=>e.key==="Enter"&&check()}
         disabled={done}
         placeholder="정답을 입력하세요"
         autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
+        lang="en" inputMode="text"
         style={{
           width:"100%",padding:"14px 16px",fontSize:16,
           border:`2px solid ${done?(ok?"#3aab6b":"#e05c4a"):"#ddd"}`,
@@ -478,6 +490,20 @@ export default function App(){
     if(type==="topic")setTopicF(val);else setTypeF(val);
     setIdx(0);setResults({});setQuestionOrder(null);setShuffled(false);
   };
+
+  // PC 방향키로 이전/다음 문제 이동 (입력창에 포커스 있을 땐 비활성화)
+  useEffect(()=>{
+    if(mode!=="study")return;
+    const onKey=(e)=>{
+      const tag=document.activeElement?.tagName;
+      if(tag==="INPUT"||tag==="TEXTAREA")return;
+      if(e.key==="ArrowRight"){e.preventDefault();goNext();}
+      else if(e.key==="ArrowLeft"){e.preventDefault();goPrev();}
+    };
+    window.addEventListener("keydown",onKey);
+    return()=>window.removeEventListener("keydown",onKey);
+  },[mode,idx,total]);
+
   const toggleShuffle=()=>{
     const base=QUESTIONS.filter(q=>
       (topicF==="전체"||q.topic===topicF)&&
